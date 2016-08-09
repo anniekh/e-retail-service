@@ -2,6 +2,7 @@ package retail.service.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import java.util.HashMap;
@@ -37,5 +38,25 @@ public class Product {
     this.description = description;
     this.tag = tag;
     this.pricePoint = pricePoint;
+  }
+
+  public String getId(){
+    return this.id;
+  }
+
+  public String getName(){
+    return this.name;
+  }
+
+  public String getDescription(){
+    return this.description;
+  }
+
+  public String getTag(){
+    return this.tag;
+  }
+
+  public HashMap<String, String> getPricePoint(){
+    return this.pricePoint;
   }
 }

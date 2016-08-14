@@ -5,6 +5,7 @@ import retail.service.model.Product;
 import retail.service.model.ProductPrice;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Optional;
 
 public class ProductManager{
@@ -33,15 +34,18 @@ public class ProductManager{
     Optional<Product> existingProduct = getProductById(product.getId());
     if(!existingProduct.isPresent())
       throw new ProductNotFoundException();
-    products.remove(existingProduct);
+    removeProductById(product.getId());
     products.add(product);
   }
 
   void removeProductById(String id){
-    Optional<Product> existingProduct = getProductById(id);
-    if(!existingProduct.isPresent())
-      throw new ProductNotFoundException();
-    products.remove(existingProduct);
+    Iterator<Product> iterator = products.iterator();
+    while(iterator.hasNext()){
+      Product product = iterator.next();
+      if(product.getId().equals(id)){
+        iterator.remove();
+      }
+    }
   }
 
   public void setProductPriceByProductId(String id, ProductPrice productPrice){

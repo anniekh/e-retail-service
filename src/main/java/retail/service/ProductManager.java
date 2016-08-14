@@ -1,5 +1,6 @@
 package retail.service;
 
+import retail.service.exceptions.ProductNotFoundException;
 import retail.service.model.Product;
 
 import java.util.ArrayList;
@@ -28,11 +29,18 @@ public class ProductManager{
   }
 
   public void updateProduct(final Product product) {
-    Product existingProduct = new Product();
-   if(products.stream().filter(x -> x.getId().equals(product.getId())).findFirst().isPresent())
-     existingProduct = products.stream().filter(x -> x.getId().equals(product.getId())).findFirst().get();
+    Optional<Product> existingProduct = getProductById(product.getId());
+    if(!existingProduct.isPresent())
+      throw new ProductNotFoundException();
     products.remove(existingProduct);
     products.add(product);
+  }
+
+  void removeProductById(String id){
+    Optional<Product> existingProduct = getProductById(id);
+    if(!existingProduct.isPresent())
+      throw new ProductNotFoundException();
+    products.remove(existingProduct);
   }
 
   public Optional<Product> getProductById(final String id) {

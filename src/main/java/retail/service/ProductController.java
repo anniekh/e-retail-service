@@ -24,15 +24,16 @@ public class ProductController {
     return ProductManager.getInstance().getAllProducts();
   }
 
-  @RequestMapping(name = "/product/", method = RequestMethod.PUT)
+  @RequestMapping(name = "/product", method = RequestMethod.PUT)
   public ResponseEntity<Product> productRequestEntity(@RequestBody Product product){
     HttpStatus httpStatus = HttpStatus.CREATED;
     if(ProductManager.getInstance().getProductById(product.getId()).isPresent()) {
       ProductManager.getInstance().updateProduct(product);
-      httpStatus = HttpStatus.ACCEPTED;
+      httpStatus = HttpStatus.OK;
     }
-    else
+    else {
       ProductManager.getInstance().addProduct(product);
+    }
     return new ResponseEntity<>(product, httpStatus);
   }
 }

@@ -31,7 +31,7 @@ public class ProductControllerTest {
 
   @Test
   public void getProductByName() throws Exception {
-    this.mockMvc.perform(get("product/3").accept(MediaType.APPLICATION_JSON_UTF8))
+    this.mockMvc.perform(get("/product/3").accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
@@ -39,17 +39,26 @@ public class ProductControllerTest {
 
   @Test
   public void products() throws Exception {
-    this.mockMvc.perform(get("products").accept(MediaType.APPLICATION_JSON_UTF8))
+    this.mockMvc.perform(get("/products").accept(MediaType.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
 
   }
-//
-//  @Test
-//  public void productRequestEntity() throws Exception {
-//    this.mockMvc.perform(put("product").accept(MediaType.APPLICATION_JSON_UTF8))
-//            .andExpect(status().isCreated())
-//            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
-//  }
+
+  @Test
+  public void productRequestEntity() throws Exception {
+    String content = "{\n" +
+            "\t\"id\": \"1\",\n" +
+            "\t\"name\": \"compass\",\n" +
+            "\t\"description\": \"a geometrical tool\",\n" +
+            "\t\"tag\": \"science\",\n" +
+            "\t\"pricePoint\": {}\n" +
+            "}";
+    this.mockMvc.perform(put("/product").accept(MediaType.APPLICATION_JSON_UTF8)
+            .contentType(MediaType.APPLICATION_JSON_UTF8)
+            .content(content))
+            .andExpect(status().isCreated())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+  }
 
 }

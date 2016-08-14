@@ -2,10 +2,9 @@ package retail.service.model;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import java.util.HashMap;
+import java.util.List;
 
 public class Product {
 
@@ -26,18 +25,18 @@ public class Product {
 
   @JsonProperty
   @NotEmpty
-  private HashMap<String, String> pricePoint;
+  private List<ProductPrice> pricePoints;
 
   public Product() {
 
   }
 
-  public Product(String id, String name, String description, String tag, HashMap<String, String> pricePoint) {
+  public Product(String id, String name, String description, String tag, List<ProductPrice> pricePoints) {
     this.id = id;
     this.name = name;
     this.description = description;
     this.tag = tag;
-    this.pricePoint = pricePoint;
+    this.pricePoints = pricePoints;
   }
 
   public String getId(){
@@ -56,7 +55,12 @@ public class Product {
     return this.tag;
   }
 
-  public HashMap<String, String> getPricePoint(){
-    return this.pricePoint;
+  public List<ProductPrice> getPricePoints(){
+    return this.pricePoints;
+  }
+
+  public void updatePrice(ProductPrice productPrice){
+    this.getPricePoints().removeIf(x -> x.getCurrency().equals(productPrice.getCurrency()));
+    this.getPricePoints().add(productPrice);
   }
 }

@@ -7,7 +7,8 @@ import org.springframework.boot.test.autoconfigure.json.*;
 import org.springframework.boot.test.json.*;
 import org.springframework.test.context.junit4.*;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -15,8 +16,16 @@ import static org.assertj.core.api.Assertions.*;
 @JsonTest
 public class ProductJSONTest {
 
-  private String productJSONBody = "{\"id\":\"1\",\"name\":\"compass\",\"description\":\"a geometrical tool\",\"tag\":\"science\",\"pricePoint\":{\"GBP\":\"10\"}};";
-
+  private String productJSONBody = "{\n" +
+          "\t\"id\": \"1\",\n" +
+          "\t\"name\": \"compass\",\n" +
+          "\t\"description\": \"a geometrical tool\",\n" +
+          "\t\"tag\": \"science\",\n" +
+          "\t\"pricePoints\": [{\n" +
+          "\t\t\"currency\": \"GBP\",\n" +
+          "\t\t\"price\": \"50\"\n" +
+          "\t}]\n" +
+          "}";
 
   @Autowired
   private JacksonTester<Product> productJson;
@@ -40,8 +49,8 @@ public class ProductJSONTest {
   }
 
   private Product createProduct() {
-    HashMap<String, String> prices = new HashMap<>();
-    prices.put("GBP", "10");
+    List<ProductPrice> prices = new ArrayList() ;
+    prices.add(new ProductPrice("USD", "50"));
     return new Product("1", "compass", "a geometrical tool", "science", prices);
   }
 }

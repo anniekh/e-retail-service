@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import retail.service.exceptions.ProductNotFoundException;
 import retail.service.model.Product;
+import retail.service.model.ProductPrice;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,16 @@ public class ProductController {
   public @ResponseBody Product getProductByName(@PathVariable String id) {
     if(ProductManager.getInstance().getProductById(id).isPresent())
       return ProductManager.getInstance().getProductById(id).get();
+    else
+      throw new ProductNotFoundException();
+  }
+
+  @RequestMapping(value = "/product/{id}/price", method = RequestMethod.POST)
+  public ResponseEntity<ProductPrice> setPriceForProduct(@PathVariable String id, @RequestBody ProductPrice productPrice) {
+    if(ProductManager.getInstance().getProductById(id).isPresent()){
+      ProductManager.getInstance().setProductPriceByProductId(id, productPrice);
+      return new ResponseEntity<>(productPrice, HttpStatus.OK);
+    }
     else
       throw new ProductNotFoundException();
   }

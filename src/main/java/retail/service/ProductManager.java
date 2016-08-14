@@ -2,6 +2,7 @@ package retail.service;
 
 import retail.service.exceptions.ProductNotFoundException;
 import retail.service.model.Product;
+import retail.service.model.ProductPrice;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -41,6 +42,11 @@ public class ProductManager{
     if(!existingProduct.isPresent())
       throw new ProductNotFoundException();
     products.remove(existingProduct);
+  }
+
+  public void setProductPriceByProductId(String id, ProductPrice productPrice){
+    Optional<Product> existingProduct = getProductById(id);
+    existingProduct.ifPresent(x -> x.updatePrice(productPrice));
   }
 
   public Optional<Product> getProductById(final String id) {
